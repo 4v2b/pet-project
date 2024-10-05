@@ -1,16 +1,73 @@
+# services:
+#   app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     container_name: pet-project-python
+#     volumes:
+#       - ./pet-project:/pet-project
+#     environment:
+#       - DATABASE_HOST=db
+#       - DATABASE_USER=admin
+#       - DATABASE_PASSWORD=admin
+#       - DATABASE_NAME=petproject
+#       - SMTP_HOST=mailtrap
+#       - SMTP_PORT=587
+#       - SMTP_USERNAME=mailtrap
+#       - SMTP_PASSWORD=supersecret
+#     ports:
+#       - "8000:8000"
+#     depends_on:
+#       - db
+#       - mailtrap
+#     networks:
+#       - app-network
+#   db:
+#     image: mysql
+#     container_name: mysql-container
+#     environment:
+#       MYSQL_ROOT_PASSWORD: root
+#       MYSQL_DATABASE: petproject
+#       MYSQL_USER: admin
+#       MYSQL_PASSWORD: admin
+#     ports:
+#       - "3306:3306"
+#     volumes:
+#       - db_data:/var/lib/mysql
+#     networks:
+#       - app-network
+#   mailtrap:
+#     image: dbck/mailtrap:latest
+#     environment:
+#       - TZ=Europe/Berlin
+#       - MAILTRAP_USER=mailtrap
+#       - MAILTRAP_PASSWORD=supersecret
+#     volumes:
+#       - maildata:/var/mail
+#     ports:
+#       - "5151:80"
+#     networks:
+#       - app-network
+
+# volumes:
+#   db_data:
+#   maildata:
+
+# networks:
+#   app-network:
 services:
   app:
     build:
-      context: .
+      context: . 
       dockerfile: Dockerfile
     container_name: pet-project-python
     volumes:
       - ./pet-project:/pet-project
     environment:
-      - DATABASE_HOST=db
-      - DATABASE_USER=admin
-      - DATABASE_PASSWORD=admin
-      - DATABASE_NAME=petproject
+      - DATABASE_HOST=mysql_db  # Change this to match the MySQL service name from the .NET API's Docker Compose
+      - DATABASE_USER=TestUser    # Update with the correct user from the .NET MySQL setup
+      - DATABASE_PASSWORD=123      # Update with the correct password
+      - DATABASE_NAME=ItMarathonDb # Update with the correct database name
       - SMTP_HOST=mailtrap
       - SMTP_PORT=587
       - SMTP_USERNAME=mailtrap
@@ -18,25 +75,11 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
       - mailtrap
     networks:
-      - app-network
+      - app-network  # Keep the existing network
+      - it-marathon-v4-net-workshop_default
 
-  db:
-    image: mysql
-    container_name: mysql-container
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: petproject
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin
-    ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - app-network
   mailtrap:
     image: dbck/mailtrap:latest
     environment:
@@ -51,8 +94,10 @@ services:
       - app-network
 
 volumes:
-  db_data:
+  # db_data:
   maildata:
 
 networks:
+  it-marathon-v4-net-workshop_default:
+    external: true
   app-network:

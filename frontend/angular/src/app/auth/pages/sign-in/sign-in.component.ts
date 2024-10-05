@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { catchError, EMPTY, map, switchMap, take, tap } from 'rxjs';
 
 import {
@@ -41,6 +41,30 @@ export class SignInComponent {
 
   authForm!: FormGroup;
   confirmCheckboxControl = new FormControl<boolean>(false);
+
+  get email(): FormControl {
+    return this.authForm.get('email') as FormControl;
+  }
+
+  get password(): FormControl {
+    return this.authForm.get('password') as FormControl;
+  }
+
+  get isFormValid(): boolean {
+    return this.authForm.valid;
+  }
+
+  ngOnInit(): void {
+    this.authForm = this.initForm();
+  }
+
+  protected initForm(): FormGroup {
+    return this.fb.group({
+      email: ['', { validators: [Validators.required, Validators.email] }],
+      password: ['', { validators: [Validators.required] }],
+    });
+  }
+
 
   signIn(): void {
     if (this.authForm.valid) {

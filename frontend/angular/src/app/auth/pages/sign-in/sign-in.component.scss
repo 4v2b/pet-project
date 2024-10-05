@@ -24,10 +24,15 @@
     margin-bottom: 25px;
   }
 
-  &__confirm-wrapper {
+  &__actions-wrapper {
     display: flex;
     justify-content: space-between;
     margin-bottom: 32px;
+  }
+
+  &__rememberme-wrapper {
+    display: flex;
+    justify-content: space-between;
   }
 
   &__confirm-checkbox--text {
