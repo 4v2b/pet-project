@@ -7,8 +7,8 @@ import { TokenService } from './token.service';
 import type { ParentDictionaryItem, PetRequestBody, ProposalItem, ProposalResponse, Token, User } from '../app.model';
 import type { LoginRequestData, SignUpData } from '../auth/auth.model';
 
-const DOT_NET_API_URL = 'https://dotnet-v4itmarathon-prod.azurewebsites.net/api/';
-const PYTHON_API_URL = 'https://python-v4-itmarathon-prod.azurewebsites.net/api/';
+const DOT_NET_API_URL = 'https://localhost:7223/api/';
+const PYTHON_API_URL = 'http://localhost:8000/api/';
 
 @Injectable({
   providedIn: 'root',
